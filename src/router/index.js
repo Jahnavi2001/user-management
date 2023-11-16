@@ -10,13 +10,13 @@ const router = createRouter({
       children: [
         {
           path: '/',
-          name: 'CreateUser',
-          component: () => import('../components/CreateUser.vue')
+          name: 'UsersList',
+          component: () => import('../components/UsersList.vue')
         },
         {
-          path: '/users-list',
-          name: '/UsersList',
-          component: () => import('../components/UsersList.vue')
+          path: '/create-user',
+          name: '/CreateUser',
+          component: () => import('../components/CreateUser.vue')
         }
       ]
     }
