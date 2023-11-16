@@ -1,7 +1,7 @@
 <template>
   <form
     @submit="(e) => e.preventDefault()"
-    class="p-10 shadow rounded-md w-4/12 mx-auto border flex flex-col gap-4"
+    class="p-10 shadow rounded-md w-full lg:w-4/12 lg:mx-auto border flex flex-col gap-4"
   >
     <h1 class="text-2xl text-center font-semibold">Create User</h1>
     <div>
@@ -83,7 +83,10 @@ const handleCreateUserClick = async () => {
 
   try {
     const data = await fetch(
-      `http://localhost:8099/user/user-details?userName=${userName.value}&email=${email.value}&password=${password.value}&phoneNumber=${phoneNumber.value}`
+      `http://localhost:8099/user/user-details?userName=${userName.value}&emailId=${email.value}&password=${password.value}&phoneNumber=${phoneNumber.value}`,
+      {
+        method: 'POST'
+      }
     )
 
     const json = await data.json()

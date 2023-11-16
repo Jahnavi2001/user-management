@@ -1,7 +1,7 @@
 <template>
   <div>
     <UserHeader />
-    <div class="mx-24 my-10">
+    <div class="mx-4 lg:mx-24 my-10">
       <div class="bg-gray-100 rounded-xl p-4 flex gap-6">
         <RouterLink
           to="/"
@@ -21,7 +21,7 @@
       <div class="my-10">
         <RouterView />
       </div>
-      
+
     </div>
   </div>
 </template>
