@@ -5,18 +5,18 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'UserDetails',
-      component: () => import('../pages/UserDetails.vue'),
+      name: 'UserHub',
+      component: () => import('../pages/UserHub.vue'),
       children: [
         {
           path: '/',
-          name: 'UsersList',
-          component: () => import('../components/UsersList.vue')
+          name: 'UserDetails',
+          component: () => import('../components/UserDetails.vue')
         },
         {
-          path: '/create-user',
-          name: '/CreateUser',
-          component: () => import('../components/CreateUser.vue')
+          path: '/create-user-account',
+          name: '/CreateUserAccount',
+          component: () => import('../components/CreateUserAccount.vue')
         }
       ]
     }

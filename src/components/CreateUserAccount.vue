@@ -12,6 +12,7 @@
         class="border border-black px-4 py-2 rounded-md w-full"
       />
     </div>
+
     <div>
       <div class="pb-1">Email</div>
       <input
@@ -22,6 +23,7 @@
       />
       <div class="text-sm pl-2 text-red-600" v-if="!isEmailError">Invalid email</div>
     </div>
+
     <div>
       <div class="pb-1">Password</div>
       <input
@@ -29,6 +31,7 @@
         v-model="password"
         :class="!isPasswordError && 'border-red-600'"
         class="border border-black px-4 py-2 rounded-md w-full"
+        autocomplete=""
       />
       <div class="text-xs pl-2 opacity-60">
         Use a password with a minimum of 8 characters, including at least one uppercase letter, one
@@ -36,6 +39,7 @@
       </div>
       <div class="text-sm pl-2 text-red-600" v-if="!isPasswordError">Invalid Password</div>
     </div>
+
     <div>
       <div class="pb-1">Mobile Number</div>
       <input
@@ -46,17 +50,19 @@
       />
       <div class="text-sm pl-2 text-red-600" v-if="!isPhoneNumberError">Invalid phoneNumber</div>
     </div>
+
     <div>
       <button
         class="bg-gray-500 text-white px-4 py-2 rounded-md w-full mt-6 disabled:opacity-25"
-        @click="handleCreateUserClick"
-        :disabled="disableCreateUser"
+        @click="handleCreateUserAccountClick"
+        :disabled="disableCreateUserAccount"
       >
-        Create an User
+        Create User Account
       </button>
     </div>
+    
     <div class="bg-green-300 rounded-lg px-4 py-2 fixed left-10 bottom-10" v-if="showSuccessToast">
-      User created successfully.
+      User Account created successfully.
     </div>
   </form>
 </template>
@@ -78,11 +84,11 @@ const isPhoneNumberError = ref(true)
 
 const showSuccessToast = ref(false)
 
-const disableCreateUser = computed(() => {
+const disableCreateUserAccount = computed(() => {
   return [userName, email, password, phoneNumber].some((field) => !field.value)
 })
 
-const handleCreateUserClick = async () => {
+const handleCreateUserAccountClick = async () => {
   isEmailError.value = checkValidEmail(email.value)
   isPasswordError.value = checkValidPassword(password.value)
   isPhoneNumberError.value = checkValidPhoneNumber(phoneNumber.value)
@@ -98,7 +104,7 @@ const handleCreateUserClick = async () => {
     )
 
     const json = await data.json()
-    console.log('🚀 > handleCreateUserClick > json:', json)
+    console.log('🚀 > handleCreateUserAccountClick > json:', json)
     showSuccessToast.value = true
   } catch (error) {
     console.error('error', error)

@@ -62,6 +62,7 @@ const props = defineProps({
     default: () => {}
   }
 })
+
 const propsData = ref(props.userData)
 
 const downloadReport = async () => {
