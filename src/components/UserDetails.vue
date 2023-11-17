@@ -138,7 +138,7 @@ const fetchUsersList = async () => {
   isLoader.value = true
   try {
     const data = await fetch(
-      `http://10.20.2.119:8099/user/get-user-details?searchBy=${searchBy.value}&searchText=${
+      `https://10.20.2.119:8099/user/get-user-details?searchBy=${searchBy.value}&searchText=${
         searchText.value
       }&page=${currentPage.value - 1}&size=10`
     )

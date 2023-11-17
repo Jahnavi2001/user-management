@@ -66,7 +66,7 @@ const props = defineProps({
 const propsData = ref(props.userData)
 
 const downloadReport = async () => {
-  const data = await fetch(`http://10.20.2.119:8099/user/download-report?id=${propsData.value.id}`)
+  const data = await fetch(`https://10.20.2.119:8099/user/download-report?id=${propsData.value.id}`)
   const blob = await data.blob()
   const link = document.createElement('a')
   link.href = window.URL.createObjectURL(blob)

@@ -97,7 +97,7 @@ const handleCreateUserAccountClick = async () => {
 
   try {
     const data = await fetch(
-      `http://10.20.2.119:8099/user/user-details?userName=${userName.value}&emailId=${email.value}&password=${password.value}&phoneNumber=${phoneNumber.value}`,
+      `https://10.20.2.119:8099/user/user-details?userName=${userName.value}&emailId=${email.value}&password=${password.value}&phoneNumber=${phoneNumber.value}`,
       {
         method: 'POST'
       }
