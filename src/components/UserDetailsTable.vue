@@ -50,8 +50,7 @@
     </table>
 
     <SingleUserInfo
-      v-if="showUserSelectedDetails"
-      :open-modal="showUserSelectedDetails"
+      v-if="showSingleUserInfo"
       :user-data="selectedUserData"
       @close-modal="closeUserSelectedDetailsModal"
     />
@@ -65,7 +64,7 @@ import SingleUserInfo from './SingleUserInfo.vue'
 const userStore = useUserStore()
 const userData = ref(userStore.getUserDetails)
 
-const showUserSelectedDetails = ref(false)
+const showSingleUserInfo = ref(false)
 const selectedUserData = ref({})
 
 watch(
@@ -77,11 +76,11 @@ watch(
 
 const handleSeeDetailsClick = (item) => {
   selectedUserData.value = item
-  showUserSelectedDetails.value = true
+  showSingleUserInfo.value = true
 }
 
 const closeUserSelectedDetailsModal = () => {
-  showUserSelectedDetails.value = false
+  showSingleUserInfo.value = false
 }
 
 </script>

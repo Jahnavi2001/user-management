@@ -1,5 +1,5 @@
 <template>
-  <div class="md:mx-12 lg:mx-20">
+  <div class="md:mx-12">
     <!-- Filters -->
     <div class="flex flex-col items-center md:flex-row lg:flex-row gap-6 justify-center">
       <select class="border border-black rounded-md px-2 py-1" @change="handleOnSearchByChange">
@@ -30,8 +30,8 @@
     <!-- Details -->
     <div class="mt-16">
       <div v-if="isLoader" class="flex flex-col gap-6">
-        <UserShimmerLoader height="10" />
-        <UserShimmerLoader height="96" />
+        <ShimmerLoader height="10" />
+        <ShimmerLoader height="96" />
       </div>
       <div v-else>
         <div class="overflow-x-scroll">
@@ -72,7 +72,7 @@ import { FwbPagination } from 'flowbite-vue'
 import { onMounted, reactive, ref } from 'vue'
 import { formatDDMMMYYYFromISOString } from '../utils/date'
 import { useUserStore } from '../stores/user'
-import UserShimmerLoader from './UserShimmerLoader.vue'
+import ShimmerLoader from './ShimmerLoader.vue'
 import UserDetailsTable from './UserDetailsTable.vue'
 
 
@@ -112,8 +112,10 @@ const handleOnSearchByChange = (e) => {
   const { name, value } = JSON.parse(e.target.value)
   searchBy.name = name
   searchBy.value = value
-  searchText.value = ''
-  fetchUsersList()
+  if (searchText.value.length) {
+    searchText.value = ''
+    fetchUsersList()
+  }
 }
 
 const handleOnSearchClick = () => {
