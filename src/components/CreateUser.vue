@@ -30,7 +30,9 @@
         :class="!isPasswordError && 'border-red-600'"
         class="border border-black px-4 py-2 rounded-md w-full"
       />
-      <div class="text-xs pl-2 opacity-60">Password must meet the criteria.</div>
+      <div class="text-xs pl-2 opacity-60">
+        Password must have atleast one uppercase & lowercase & number and min of 8 chars.
+      </div>
       <div class="text-sm pl-2 text-red-600" v-if="!isPasswordError">Invalid Password</div>
     </div>
     <div>
@@ -52,6 +54,9 @@
         Create an User
       </button>
     </div>
+    <div class="bg-green-300 rounded-lg px-4 py-2 fixed left-10 bottom-10" v-if="showSuccessToast">
+      User created successfully.
+    </div>
   </form>
 </template>
 
@@ -69,6 +74,8 @@ const isPasswordError = ref(true)
 
 const phoneNumber = ref('')
 const isPhoneNumberError = ref(true)
+
+const showSuccessToast = ref(false)
 
 const disableCreateUser = computed(() => {
   return [userName, email, password, phoneNumber].some((field) => !field.value)
@@ -91,6 +98,7 @@ const handleCreateUserClick = async () => {
 
     const json = await data.json()
     console.log('🚀 > handleCreateUserClick > json:', json)
+    showSuccessToast.value = true
   } catch (error) {
     console.error('error', error)
   }
