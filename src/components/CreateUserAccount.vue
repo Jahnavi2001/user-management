@@ -60,8 +60,8 @@
         Create User Account
       </button>
     </div>
-    
-    <div class="bg-green-300 rounded-lg px-4 py-2 fixed left-10 bottom-10" v-if="showSuccessToast">
+
+    <div class="bg-lime-500 rounded-lg px-4 py-2 fixed left-10 bottom-10" v-if="showSuccessToast">
       User Account created successfully.
     </div>
   </form>
@@ -104,8 +104,18 @@ const handleCreateUserAccountClick = async () => {
     )
 
     const json = await data.json()
-    console.log('🚀 > handleCreateUserAccountClick > json:', json)
-    showSuccessToast.value = true
+
+    if (json.userName) {
+      showSuccessToast.value = true
+      setTimeout(() => {
+        showSuccessToast.value = false
+      }, 3000)
+
+      userName.value = ''
+      email.value = ''
+      password.value = ''
+      phoneNumber.value = ''
+    }
   } catch (error) {
     console.error('error', error)
   }

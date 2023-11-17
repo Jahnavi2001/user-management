@@ -3,7 +3,7 @@
     class="fixed inset-0 bg-[rgba(0,0,0,.64)] flex items-center justify-center"
     @click="$emit('close-modal')"
   >
-    <div class="bg-white p-8 rounded-lg shadow-md relative w-4/12" @click.stop>
+    <div class="bg-white p-8 rounded-lg shadow-md relative w-11/12 lg:w-4/12" @click.stop>
       <button @click="$emit('close-modal')" class="absolute -top-7 right-0 text-white font-bold">
         <svg
           data-v-0e03718a=""
@@ -70,7 +70,7 @@ const downloadReport = async () => {
   const blob = await data.blob()
   const link = document.createElement('a')
   link.href = window.URL.createObjectURL(blob)
-  link.download = 'user-report.pdf'
+  link.download = `${propsData.value.userName}-user-report.pdf`
   link.click()
 }
 </script>

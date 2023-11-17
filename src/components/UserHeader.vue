@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8 shadow-md fixed w-full bg-white top-0">
+  <div class="p-8 pl-28 shadow-md fixed w-full bg-white top-0 font-bold text-lg z-10">
     User Management System
   </div>
 </template>

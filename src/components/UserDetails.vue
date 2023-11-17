@@ -1,13 +1,13 @@
 <template>
-  <div class="lg:mx-20">
+  <div class="md:mx-12 lg:mx-20">
     <!-- Filters -->
-    <div class="flex flex-col lg:flex-row gap-6 justify-center">
+    <div class="flex flex-col items-center md:flex-row lg:flex-row gap-6 justify-center">
       <select class="border border-black rounded-md px-2 py-1" @change="handleOnSearchByChange">
         <option :value="JSON.stringify(item)" v-for="item in SEARCH_BY_LIST" :key="item.value">
           {{ item.name }}
         </option>
       </select>
-      <div class="w-full lg:w-6/12 flex">
+      <div class="w-full md:5/12 lg:w-6/12 flex">
         <input
           type="text"
           class="border border-black px-4 py-3 rounded-tl-md rounded-bl-md w-3/4 lg:w-10/12"
@@ -22,37 +22,48 @@
           Search
         </button>
       </div>
+      <div v-if="searchText.length">
+        <button class="text-gray-500 hover:text-gray-950" @click="onHandleReset">Reset</button>
+      </div>
     </div>
 
     <!-- Details -->
-    <div class="mt-16 overflow-x-scroll">
+    <div class="mt-16">
       <div v-if="isLoader" class="flex flex-col gap-6">
-        <ShimmerLoader height="10" />
-        <ShimmerLoader height="96" />
+        <UserShimmerLoader height="10" />
+        <UserShimmerLoader height="96" />
       </div>
-      <UserDetailsTable v-else />
-
-      <div v-if="!isLoader && !userData.length" class="w-full py-10 flex flex-col items-center gap-4">
-        <div>
-          <img
-            src="https://cdn-0.emojis.wiki/emoji-pics/whatsapp/man-shrugging-whatsapp.png"
-            alt="no-search-results"
-          />
+      <div v-else>
+        <div class="overflow-x-scroll">
+          <UserDetailsTable />
         </div>
-        <div class="font-semibold text-lg">No Search Results Found...</div>
+
+        <div v-if="!userData.length" class="w-full py-10 flex flex-col items-center gap-4">
+          <div>
+            <img
+              src="https://cdn-0.emojis.wiki/emoji-pics/whatsapp/man-shrugging-whatsapp.png"
+              alt="no-search-results"
+              width="220"
+              height="200"
+            />
+          </div>
+          <div class="font-semibold text-lg">No Search Results Found...</div>
+        </div>
+        <div v-else>
+          <fwb-pagination
+            class="text-right mt-6 mr-4"
+            v-if="totalRecords > 10"
+            v-model="currentPage"
+            :total-items="totalRecords"
+            :per-page="10"
+            previous-label="<<"
+            next-label=">>"
+            @page-changed="handleOnPageChange"
+          >
+          </fwb-pagination>
+        </div>
       </div>
     </div>
-
-    <fwb-pagination
-      v-if="totalRecords > 10"
-      v-model="currentPage"
-      :total-items="totalRecords"
-      :per-page="10"
-      previous-label="<<"
-      next-label=">>"
-      @page-changed="handleOnPageChange"
-    >
-    </fwb-pagination>
   </div>
 </template>
 
@@ -60,9 +71,10 @@
 import { FwbPagination } from 'flowbite-vue'
 import { onMounted, reactive, ref } from 'vue'
 import { formatDDMMMYYYFromISOString } from '../utils/date'
-import ShimmerLoader from './ShimmerLoader.vue'
 import { useUserStore } from '../stores/user'
+import UserShimmerLoader from './UserShimmerLoader.vue'
 import UserDetailsTable from './UserDetailsTable.vue'
+
 
 const SEARCH_BY_LIST = [
   {
@@ -71,11 +83,11 @@ const SEARCH_BY_LIST = [
   },
   {
     name: 'Email',
-    value: 'email'
+    value: 'emailId'
   },
   {
     name: 'Phone number',
-    value: 'phoneNumber'
+    value: 'phoneNo'
   }
 ]
 
@@ -85,6 +97,7 @@ const searchBy = reactive({
   name: 'User name',
   value: 'userName'
 })
+
 const searchText = ref('')
 const userData = ref(userStore.getUserDetails)
 const isLoader = ref(false)
@@ -104,7 +117,18 @@ const handleOnSearchByChange = (e) => {
 }
 
 const handleOnSearchClick = () => {
-  if (searchText.value.length < 3) return
+  currentPage.value = 1
+  fetchUsersList()
+}
+
+const handleOnPageChange = (page) => {
+  currentPage.value = page
+  fetchUsersList()
+}
+
+const onHandleReset = () => {
+  searchText.value = ''
+  currentPage.value = 1
   fetchUsersList()
 }
 
@@ -131,10 +155,5 @@ const fetchUsersList = async () => {
   } catch (error) {
     isLoader.value = false
   }
-}
-
-const handleOnPageChange = (page) => {
-  currentPage.value = page
-  fetchUsersList()
 }
 </script>

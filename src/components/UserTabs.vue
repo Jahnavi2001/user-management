@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-4 lg:mx-24 mb-20 mt-36">
+  <div class="mx-4 md:mx-16 lg:mx-24 mb-20 mt-36">
     <div class="bg-gray-100 rounded-xl p-4 flex gap-6">
       <RouterLink
           to="/"
@@ -15,7 +15,6 @@
         >
           Create User Account
         </RouterLink>
-
     </div>
     <div class="my-10">
       <RouterView />
