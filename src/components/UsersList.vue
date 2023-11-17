@@ -25,6 +25,7 @@
 
     <div class="mt-16 overflow-x-scroll">
       <div class="mb-2 text-lg font-semibold">Users List</div>
+
       <div v-if="isLoader" class="flex flex-col gap-6">
         <ShimmerLoader height="10" />
         <ShimmerLoader height="96" />
@@ -35,7 +36,7 @@
       >
         <thead>
           <th
-            class="rounded-lg border border-slate-300 text-left px-4 py-3 bg-gray-100 w-2/12"
+            class="rounded-lg border border-slate-300 text-left px-4 py-3 bg-gray-100 w-3/12"
             id="user-id"
           >
             ID
@@ -62,14 +63,14 @@
         </thead>
         <tbody v-if="userData.length">
           <tr v-for="item in userData" :key="item.id">
-            <td class="border border-slate-300 px-4 py-3">{{ item.id }}</td>
+            <td class="border border-slate-300 px-4 py-3 break-all">{{ item.id }}</td>
             <td class="border border-slate-300 px-4 py-3 break-all">{{ item.userName }}</td>
             <td class="border border-slate-300 px-4 py-3 break-all">{{ item.emailId }}</td>
-            <td class="border border-slate-300 px-4 py-3 break-all">{{ item.phoneNumber }}</td>
-            <td class="border border-slate-300 px-4 py-3">{{ item.createdDate }}</td>
+            <td class="border border-slate-300 px-4 py-3 break-all">{{ item.phoneNo }}</td>
+            <td class="border border-slate-300 px-4 py-3">{{ item.createddate }}</td>
             <td class="border border-slate-300 px-4 py-3 text-center">
               <button
-                class="px-2 py-1 bg-gray-400 text-white rounded-lg"
+                class="px-2 py-1 bg-gray-400 text-white rounded-md"
                 @click="handleSeeDetailsClick(item)"
               >
                 See details
@@ -89,6 +90,16 @@
       </div>
     </div>
 
+    <fwb-pagination
+      v-if="totalRecords > 10"
+      v-model="currentPage"
+      :total-items="totalRecords"
+      :per-page="10"
+      previous-label="<<"
+      next-label=">>"
+      @page-changed="handleOnPageChange"
+    ></fwb-pagination>
+
     <SelectedUserDetails
       v-if="showUserSelectedDetails"
       :open-modal="showUserSelectedDetails"
@@ -98,7 +109,9 @@
   </div>
 </template>
 <script setup>
+import { FwbPagination } from 'flowbite-vue'
 import { onMounted, reactive, ref } from 'vue'
+import { formatDDMMMYYYFromISOString } from '../utils/date'
 import SelectedUserDetails from './SelectedUserDetails.vue'
 import ShimmerLoader from './ShimmerLoader.vue'
 
@@ -127,6 +140,8 @@ const userData = ref([])
 const isLoader = ref(false)
 const showUserSelectedDetails = ref(false)
 const selectedUserData = ref({})
+const currentPage = ref(1)
+const totalRecords = ref(0)
 
 const handleOnSearchByChange = (e) => {
   const { name, value } = JSON.parse(e.target.value)
@@ -137,7 +152,6 @@ const handleOnSearchByChange = (e) => {
 }
 
 const handleOnSearchClick = () => {
-  console.log('handleOnSearchClick', searchText.value)
   if (searchText.value.length < 3) return
   fetchUsersList()
 }
@@ -148,85 +162,24 @@ onMounted(() => {
 
 const fetchUsersList = async () => {
   isLoader.value = true
-  console.log('🚀 > fetchUsersList > isLoader:', isLoader.value)
   try {
-    // const data = await fetch(
-    //   `http://localhost:8099/get-user-details?searchBy=${searchBy.value}&searchText=${searchText.value}`
-    // )
-    // const json = await data.json()
-    // console.log('🚀 > fetchUsersList > json:', json)
-    userData.value = [
-      {
-        userName: 'Ravindra',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
-      },
-      {
-        userName: 'Rohit sharma',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
-      },
-      {
-        userName: 'Sachin',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
-      },
-      {
-        userName: 'Dhoni',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
-      },
-      {
-        userName: 'Virat',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
-      },
-      {
-        userName: 'Raina',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
-      },
-      {
-        userName: 'Yuvaraj',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
-      },
-      {
-        userName: 'Kuldeep',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
-      },
-      {
-        userName: 'Rahul',
-        emailId: 'abcdef@test.com',
-        phoneNumber: 9875326232,
-        id: 637,
-        createdDate: '23-07-2023'
+    const data = await fetch(
+      `http://10.20.2.119:8099/user/get-user-details?searchBy=${searchBy.value}&searchText=${
+        searchText.value
+      }&page=${currentPage.value - 1}&size=10`
+    )
+    const json = await data.json()
+    userData.value = json.usersList.map((item) => {
+      return {
+        ...item,
+        createddate : formatDDMMMYYYFromISOString(item.createddate)
       }
-    ]
-    console.log('🚀 > fetchUsersList > json:', userData.value)
+    })
+
+    totalRecords.value = json.totalUsersCount
     isLoader.value = false
-    console.log('🚀 > fetchUsersList > isLoader.value:', isLoader.value)
   } catch (error) {
-    console.error(error)
     isLoader.value = false
-    console.log('🚀 > fetchUsersList > isLoader.value:', isLoader.value)
   }
 }
 
@@ -237,5 +190,10 @@ const handleSeeDetailsClick = (item) => {
 
 const closeUserSelectedDetailsModal = () => {
   showUserSelectedDetails.value = false
+}
+
+const handleOnPageChange = (page) => {
+  currentPage.value = page
+  fetchUsersList()
 }
 </script>

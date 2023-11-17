@@ -31,7 +31,8 @@
         class="border border-black px-4 py-2 rounded-md w-full"
       />
       <div class="text-xs pl-2 opacity-60">
-        Password must have atleast one uppercase & lowercase & number and min of 8 chars.
+        Use a password with a minimum of 8 characters, including at least one uppercase letter, one
+        lowercase letter, and one number.
       </div>
       <div class="text-sm pl-2 text-red-600" v-if="!isPasswordError">Invalid Password</div>
     </div>
@@ -90,7 +91,7 @@ const handleCreateUserClick = async () => {
 
   try {
     const data = await fetch(
-      `http://localhost:8099/user/user-details?userName=${userName.value}&emailId=${email.value}&password=${password.value}&phoneNumber=${phoneNumber.value}`,
+      `http://10.20.2.119:8099/user/user-details?userName=${userName.value}&emailId=${email.value}&password=${password.value}&phoneNumber=${phoneNumber.value}`,
       {
         method: 'POST'
       }

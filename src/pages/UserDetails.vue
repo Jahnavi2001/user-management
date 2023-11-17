@@ -1,7 +1,7 @@
 <template>
   <div>
     <UserHeader />
-    <div class="mx-4 lg:mx-24 my-10">
+    <div class="mx-4 lg:mx-24 mb-20 mt-36">
       <div class="bg-gray-100 rounded-xl p-4 flex gap-6">
         <RouterLink
           to="/"
@@ -29,6 +29,7 @@
 import UserHeader from '../components/UserHeader.vue';
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
+
 const route = useRoute()
 const currentRoutePath = ref('')
 watch(
@@ -41,4 +42,5 @@ watch(
 onMounted(() => {
   currentRoutePath.value = route.path
 })
+
 </script>

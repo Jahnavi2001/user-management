@@ -33,7 +33,7 @@
         </div>
         <div class="flex w-full">
           <div class="w-4/12">Contact number:</div>
-          <div class="opacity-60">{{ userData.phoneNumber }}</div>
+          <div class="opacity-60">{{ userData.phoneNo }}</div>
         </div>
         <div class="flex w-full">
           <div class="w-4/12">User name:</div>
@@ -41,7 +41,7 @@
         </div>
         <div class="flex w-full">
           <div class="w-4/12">Created date:</div>
-          <div class="opacity-60">{{ userData.createdDate }}</div>
+          <div class="opacity-60">{{ userData.createddate }}</div>
         </div>
       </div>
       <div class="w-full flex justify-center">
@@ -53,13 +53,23 @@
   </div>
 </template>
 <script setup>
-defineProps({
+
+import { ref } from 'vue'
+
+const props = defineProps({
   userData: {
     type: Object,
     default: () => {}
   }
 })
-const downloadReport = () => {
-  console.log('downloadReport')
+const propsData = ref(props.userData)
+
+const downloadReport = async () => {
+  const data = await fetch(`http://10.20.2.119:8099/user/download-report?id=${propsData.value.id}`)
+  const blob = await data.blob()
+  const link = document.createElement('a')
+  link.href = window.URL.createObjectURL(blob)
+  link.download = 'user-report.pdf'
+  link.click()
 }
 </script>
